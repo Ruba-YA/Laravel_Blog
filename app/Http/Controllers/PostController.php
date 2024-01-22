@@ -8,11 +8,8 @@ class PostController extends Controller
 {
     public function index()
     {
-        \Illuminate\Support\Facades\DB::listen(function($query)
-        {
-            logger($query->sql);
-        });
-        $posts = Post::with('category')->get();
+
+        $posts = Post::latest();
         return view('posts',['posts'=> $posts ]);
     }
 
@@ -20,5 +17,16 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         return view ('post',['post'=>$post]);
+    }
+
+    public function search()
+    {
+        $posts = Post::latest();
+        if(request('search'))
+        {
+            $posts->where('title' , 'like','%'.request('search').'%')
+                  ->orwhere('description','like','%'.request('search').'%');
+        }
+        return view('posts',['posts'=> $posts->get()]);
     }
 }

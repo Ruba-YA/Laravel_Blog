@@ -21,7 +21,7 @@ Route::get('/', function () {
 });
 Route::get('/posts' , [PostController::class,"index"]);
 Route::get('/post/{ruba}' , [PostController::class,"show"]);
-
+Route::get('/posts' , [PostController::class,"search"]);
 Route::get('/categories/{category:slug}',function(Category $category)
 {
     return view ('posts' , ['posts' => $category->posts]);
